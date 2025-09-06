@@ -1,3 +1,10 @@
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+}
+
+
 const crateElement =(arry) =>{
     const htmElements= arry.map(x => `<span class="btn"> ${x}</span>`)
     return htmElements.join(' ') 
@@ -58,11 +65,25 @@ const lessonWord =(id) =>{
 //     "id": 3
 // }
 
+//  wordDetails spinner 
+// const manageWordSpinner = (status)=>{
+//     if(status === true){
+//         document.getElementById('details-spinner').classList.remove('hidden');
+//         document.getElementById('word-details').classList.add('hidden');
+        
+//     }
+//     else{
+//         document.getElementById('details-spinner').classList.add('hidden');
+//         document.getElementById('word-details').classList.remove('hidden');
+
+//     }
+// }
 
 
 //  wrod Details 
 
  const wordDetails = async (id) =>{
+    
     const url =`https://openapi.programming-hero.com/api/word/${id}`
      const res = await fetch(url);
      const data =await res.json();
@@ -72,6 +93,7 @@ const lessonWord =(id) =>{
  const displayDetails =word =>{
      const wordDetailsClick = document.getElementById('word-details');
      wordDetailsClick.innerHTML =`
+    
          <div>
       <h1 class="text-3xl font-bold">${word.word} (<i class="fa-solid fa-microphone-lines"></i>:${word.pronunciation})</h1>
      </div>
@@ -95,6 +117,7 @@ const lessonWord =(id) =>{
      `
 
      document.getElementById('my_modal').showModal()
+     manageWordSpinner(false)
  }
 
 // remove Lesson bg
@@ -151,7 +174,7 @@ const displayWord = word =>{
 
             <button onclick="wordDetails(${word.id})" class="btn bg-[#1a91ff1a] hover:bg-[#1A91FF80]"><i class="fa-solid fa-circle-info"></i></button>
 
-            <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] "><i class="fa-solid fa-volume-high"></i></button>
+            <button onclick="pronounceWord('${word.word}')" class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80] "><i class="fa-solid fa-volume-high"></i></button>
             </div>
             </div>
             
@@ -184,5 +207,22 @@ const displayWord = word =>{
 loadLesson()
 
 
+
+document.getElementById('btn-search')
+.addEventListener('click' ,  () =>{
+    const input =document.getElementById('input-search');
+    const  searchValue = input.value.trim().toLowerCase();
+
+    fetch('https://openapi.programming-hero.com/api/words/all')
+    .then(res =>res.json())
+    .then(data => {
+        const allWord =data.data;
+        // console.log(allWord)
+        const filterWord =allWord.filter(word => word.word.toLowerCase().includes((searchValue)
+    ));
+     displayWord(filterWord)
+    })
+    removeBg()
+} )
 
 
