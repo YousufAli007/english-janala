@@ -29,6 +29,7 @@ const loadLesson =() =>{
 // word add section
 
 const lessonWord =(id) =>{
+     manageSpinner(true)
     fetch(`https://openapi.programming-hero.com/api/level/${id}`)
    .then(res =>res.json())
   .then(json => {
@@ -105,13 +106,13 @@ const removeBg =() =>{
 // spinner 
 
 const manageSpinner =status=>{
-    if(status === true){
+    if(status == true){
         document.getElementById('spinner').classList.remove('hidden');
         document.getElementById('lesson-word').classList.add('hidden');
     }
     else{
-        document.getElementById('spinner').classList.add('hidden');
         document.getElementById('lesson-word').classList.remove('hidden');
+        document.getElementById('spinner').classList.add('hidden');
     }
 }
 
@@ -120,7 +121,7 @@ const manageSpinner =status=>{
 
 const displayWord = word =>{
     // console.log(word)
-     manageSpinner(true)
+
     const lessonWords =document.getElementById('lesson-word');
     lessonWords.innerHTML ='';
 
@@ -157,7 +158,7 @@ const displayWord = word =>{
             `
             lessonWords.appendChild(divWord);
         })
-      manageSpinner(false)
+     manageSpinner(false)
     }
     
     
