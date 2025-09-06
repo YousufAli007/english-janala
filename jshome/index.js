@@ -1,3 +1,10 @@
+const crateElement =(arry) =>{
+    const htmElements= arry.map(x => `<span class="btn"> ${x}</span>`)
+    return htmElements.join(' ') 
+}
+
+
+
 // {
 //     "id": 101,
 //     "level_no": 1,
@@ -82,9 +89,7 @@ const lessonWord =(id) =>{
 
      <div>
       <h1 class="text-[20px] font-semibold">সমার্থক শব্দ গুলো</h1>
-      <p class="btn">async</p>
-      <p class="btn">async</p>
-      <p class="btn">async</p>
+       <div> ${crateElement(word.synonyms)}</div>
      </div>
      `
 
@@ -97,11 +102,25 @@ const removeBg =() =>{
     // console.log(remove);
     remove.forEach(x => x.classList.remove('active') )
 }
+// spinner 
+
+const manageSpinner =status=>{
+    if(status === true){
+        document.getElementById('spinner').classList.remove('hidden');
+        document.getElementById('lesson-word').classList.add('hidden');
+    }
+    else{
+        document.getElementById('spinner').classList.add('hidden');
+        document.getElementById('lesson-word').classList.remove('hidden');
+    }
+}
+
 
 //  condition 
 
 const displayWord = word =>{
     // console.log(word)
+     manageSpinner(true)
     const lessonWords =document.getElementById('lesson-word');
     lessonWords.innerHTML ='';
 
@@ -113,11 +132,11 @@ const displayWord = word =>{
             <p class="text-gray-400  font-semibold"> এই Lesson এ এখনো কোনো vocabularies  যুক্ত করা হয়নি</p>
             <h1 class="text-3xl font-bold"> নেক্সট  Lesson যান</h1>
          </div>
-        
-        
-        `;
+        `; 
+        manageSpinner(false)
+        return
     }
-
+ 
 
     
     word.forEach( word =>{
@@ -138,6 +157,7 @@ const displayWord = word =>{
             `
             lessonWords.appendChild(divWord);
         })
+      manageSpinner(false)
     }
     
     
